@@ -184,7 +184,7 @@
     }];
     
     if (accessoryView) {
-        self.accessoryViewWidthConstraint.active = NO;
+        self.accessoryViewWidthConstraint.constant= accessoryView.frame.size.width;
         accessoryView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.accessoryContainerView addSubview:accessoryView];
         
@@ -193,7 +193,7 @@
         [self.accessoryContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[accessoryView]|" options:0 metrics:nil views:views]];
         
     } else {
-        self.accessoryViewWidthConstraint.active = YES;
+        self.accessoryViewWidthConstraint.constant = 0;
     }
     
     [self setNeedsUpdateConstraints];
