@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/flavionegrao/OCNotificationBar.git", :tag => "#{s.version}" }
   s.source_files     = "OCNotificationBar/**"
 
-  s.ios.deployment_target = '8.3'
+  s.ios.deployment_target = '8.0'
   s.requires_arc = true
 
 end
