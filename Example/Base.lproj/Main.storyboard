@@ -13,7 +13,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection headerTitle="Section-1" id="F0B-pO-mED">
                                 <cells>
@@ -260,15 +260,27 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="+Progress" id="J1p-tt-dIA">
+                        <barButtonItem title="+" id="J1p-tt-dIA">
                             <connections>
                                 <action selector="didTouchMoreProgress:" destination="ueh-iI-zn8" id="JuB-W3-dex"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Yt9-tV-b7M"/>
-                        <barButtonItem title="-Progress" id="sBa-ba-hLS">
+                        <barButtonItem title="-" id="sBa-ba-hLS">
                             <connections>
                                 <action selector="didTouchLessProgress:" destination="ueh-iI-zn8" id="FQ2-XE-z8Q"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="cJG-ms-AfV"/>
+                        <barButtonItem title="Show Accessory" id="Rww-99-3c3">
+                            <connections>
+                                <action selector="showAccessory:" destination="ueh-iI-zn8" id="i1F-u1-avS"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="IXi-se-JeE"/>
+                        <barButtonItem title="Hide Accessory" id="bh2-pE-TLv">
+                            <connections>
+                                <action selector="hideAccessory:" destination="ueh-iI-zn8" id="US6-xo-JrQ"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>

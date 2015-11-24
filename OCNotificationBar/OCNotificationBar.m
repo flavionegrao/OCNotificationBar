@@ -14,7 +14,9 @@
 @property (nonatomic, weak) UIImageView* imageView;
 @property (nonatomic, weak) UIView* progressViewBackground;
 @property (nonatomic, weak) UIView* progressView;
+@property (nonatomic, weak) UIView* accessoryContainerView;
 @property (nonatomic, strong) NSLayoutConstraint* progressViewWidthConstraint;
+@property (nonatomic, strong) NSLayoutConstraint* accessoryViewWidthConstraint;
 @property (nonatomic, weak) CALayer* bottomHairlineLayer;
 @end
 
@@ -47,24 +49,29 @@
     UILabel* textLabel = [[UILabel alloc]initWithFrame:CGRectZero];
     UIView* progressViewBackground = [[UIView alloc]initWithFrame:CGRectZero];
     UIView* progressView= [[UIView alloc]initWithFrame:CGRectZero];
+    UIView* accessoryContainerView = [[UIView alloc]initWithFrame:CGRectZero];
     
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     textLabel.translatesAutoresizingMaskIntoConstraints = NO;
     progressViewBackground.translatesAutoresizingMaskIntoConstraints = NO;
     progressView.translatesAutoresizingMaskIntoConstraints = NO;
+    accessoryContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     
     [contentView addSubview:imageView];
     [contentView addSubview:textLabel];
     [contentView addSubview:progressViewBackground];
     [contentView addSubview:progressView];
+    [contentView addSubview:accessoryContainerView];
     [self addSubview:contentView];
     
     self.imageView = imageView;
     self.textLabel = textLabel;
     self.progressViewBackground = progressViewBackground;
     self.progressView = progressView;
+    self.accessoryContainerView = accessoryContainerView;
     self.contentView = contentView;
+
 }
 
 
@@ -74,21 +81,26 @@
                             @"labelView":self.textLabel,
                             @"progressViewBackground":self.progressViewBackground,
                             @"progressView":self.progressView,
-                            @"contentView":self.contentView};
+                            @"contentView":self.contentView,
+                            @"accessoryContainerView":self.accessoryContainerView};
     
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[contentView]|" options:0 metrics:nil views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[contentView]|" options:0 metrics:nil views:views]];
     
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[imageView]-[labelView]-|" options:0 metrics:nil views:views]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[imageView]-[progressViewBackground]-|" options:0 metrics:nil views:views]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[imageView]-[labelView]-[accessoryContainerView]-|" options:0 metrics:nil views:views]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[imageView]-[progressViewBackground]-[accessoryContainerView]-|" options:0 metrics:nil views:views]];
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[imageView]-[progressView]" options:0 metrics:nil views:views]];
     
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[imageView]" options:0 metrics:nil views:views]];
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[labelView]-[progressViewBackground]" options:0 metrics:nil views:views]];
     [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[labelView]-[progressView]" options:0 metrics:nil views:views]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[accessoryContainerView]-|" options:0 metrics:nil views:views]];
     
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.progressViewBackground attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:10]];
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:10]];
+    
+    self.accessoryViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.accessoryContainerView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
+    [self.contentView addConstraint:self.accessoryViewWidthConstraint];
     
     self.progressViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self.progressView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:0];
     [self.progressView addConstraint:self.progressViewWidthConstraint];
@@ -102,6 +114,9 @@
 
 - (void) applyDefaults {
     self.imageView.backgroundColor = [UIColor grayColor];
+    self.imageView.layer.cornerRadius = 3.0f;
+    self.imageView.clipsToBounds = YES;
+    
     self.progressBarColor = [UIColor colorWithRed:0.24 green:0.73 blue:0.57 alpha:1];
     self.progressBarBackgroundColor = [UIColor grayColor];
     
@@ -161,6 +176,35 @@
     self.bottomHairlineLayer.backgroundColor = bottomHairlineColor.CGColor;
 }
 
+- (void) setAccessoryView:(UIView *)accessoryView {
+    _accessoryView = accessoryView;
+    
+    [self.accessoryContainerView.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj removeFromSuperview];
+    }];
+    
+    if (accessoryView) {
+        self.accessoryViewWidthConstraint.active = NO;
+        accessoryView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.accessoryContainerView addSubview:accessoryView];
+        
+        NSDictionary* views = @{@"accessoryView":accessoryView};
+        [self.accessoryContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[accessoryView]|" options:0 metrics:nil views:views]];
+        [self.accessoryContainerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[accessoryView]|" options:0 metrics:nil views:views]];
+        
+    } else {
+        self.accessoryViewWidthConstraint.active = YES;
+    }
+    
+    [self setNeedsUpdateConstraints];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        [self layoutIfNeeded];
+    }];
+}
+
+
+#pragma mark - View Layout
 
 - (void) layoutSubviews {
     if (!self.bottomHairlineLayer) {

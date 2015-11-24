@@ -95,4 +95,15 @@
     self.notificationBar.frame = frame;
 }
 
+- (IBAction)showAccessory:(id)sender {
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeSystem];
+    [button setTitle:@"Cancel" forState:UIControlStateNormal];
+    [button sizeToFit];
+    self.notificationBar.accessoryView = button;
+}
+
+
+- (IBAction)hideAccessory:(id)sender {
+    self.notificationBar.accessoryView = nil;
+}
 @end

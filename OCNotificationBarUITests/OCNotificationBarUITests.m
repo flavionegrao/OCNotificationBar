@@ -37,4 +37,9 @@
     // Use XCTAssert and related functions to verify your tests produce the correct results.
 }
 
+- (void) testThatNotificationBarIsShowing {
+    [[[XCUIApplication alloc] init].navigationBars[@"TableViewController"].buttons[@"Show"] tap];
+    
+}
+
 @end

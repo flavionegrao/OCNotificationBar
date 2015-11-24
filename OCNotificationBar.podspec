@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "OCNotificationBar"
-  s.version          = "0.1"
+  s.version          = "0.2"
   s.summary          = "Slack Notification Bar clone attempt"
   s.homepage         = "https://github.com/flavionegrao/OCNotificationBar"
   s.license          = 'MIT'
