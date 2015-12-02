@@ -37,7 +37,6 @@
 - (OCProgressNotificationBar*) progressNotificationBar {
     if (!_progressNotificationBar) {
         _progressNotificationBar = [[OCProgressNotificationBar alloc]initWithFrame:CGRectZero];
-        _progressNotificationBar.backgroundColor = [UIColor greenColor];
         _progressNotificationBar.alpha = 0;
         
         _progressNotificationBar.text = @"Uploading your file...";
@@ -52,7 +51,6 @@
 - (OCLocalNotificationBar*) localNotificationBar {
     if (!_localNotificationBar) {
         _localNotificationBar = [[OCLocalNotificationBar alloc]initWithFrame:CGRectZero];
-        _localNotificationBar.backgroundColor = [UIColor greenColor];
         _localNotificationBar.alpha = 0;
         
         _localNotificationBar.textLabel.text = @"Main Text";

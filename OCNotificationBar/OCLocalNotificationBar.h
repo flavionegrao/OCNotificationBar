@@ -25,7 +25,6 @@
 
 
 #pragma mark - Other
-
 // Default is lightGrayColor
 @property (nonatomic, strong, nullable) UIColor* bottomHairlineColor;
 
