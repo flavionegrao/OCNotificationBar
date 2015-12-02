@@ -7,11 +7,13 @@
 //
 
 #import "ViewController.h"
-#import "OCNotificationBar.h"
+#import "OCProgressNotificationBar.h"
+#import "OCLocalNotificationBar.h"
 
 @interface ViewController ()
 
-@property (nonatomic, strong) OCNotificationBar* notificationBar;
+@property (nonatomic, strong) OCProgressNotificationBar* progressNotificationBar;
+@property (nonatomic, strong) OCLocalNotificationBar* localNotificationBar;
 @property (nonatomic,assign) float originalTableViewOffset;
 
 @end
@@ -31,60 +33,102 @@
     self.originalTableViewOffset = self.tableView.contentOffset.y;
 }
 
-- (OCNotificationBar*) notificationBar {
-    if (!_notificationBar) {
-        _notificationBar = [[OCNotificationBar alloc]initWithFrame:CGRectZero];
-        _notificationBar.backgroundColor = [UIColor greenColor];
-        _notificationBar.alpha = 0;
+
+- (OCProgressNotificationBar*) progressNotificationBar {
+    if (!_progressNotificationBar) {
+        _progressNotificationBar = [[OCProgressNotificationBar alloc]initWithFrame:CGRectZero];
+        _progressNotificationBar.backgroundColor = [UIColor greenColor];
+        _progressNotificationBar.alpha = 0;
         
-        _notificationBar.text = @"Uploading your file...";
-        _notificationBar.textColor = [UIColor blueColor];
-        _notificationBar.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
-        _notificationBar.image = [UIImage imageNamed:@"sample_image"];
-        _notificationBar.bottomHairlineColor = [UIColor blueColor];
+        _progressNotificationBar.text = @"Uploading your file...";
+        _progressNotificationBar.textColor = [UIColor blueColor];
+        _progressNotificationBar.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
+        _progressNotificationBar.image = [UIImage imageNamed:@"sample_image"];
+        _progressNotificationBar.bottomHairlineColor = [UIColor blueColor];
     }
-    return _notificationBar;
+    return _progressNotificationBar;
+}
+
+- (OCLocalNotificationBar*) localNotificationBar {
+    if (!_localNotificationBar) {
+        _localNotificationBar = [[OCLocalNotificationBar alloc]initWithFrame:CGRectZero];
+        _localNotificationBar.backgroundColor = [UIColor greenColor];
+        _localNotificationBar.alpha = 0;
+        
+        _localNotificationBar.textLabel.text = @"Main Text";
+        _localNotificationBar.textLabel.font = [UIFont boldSystemFontOfSize:12];
+        _localNotificationBar.detailTextLabel.text = @"Detail Text";
+        _localNotificationBar.detailTextLabel.font = [UIFont systemFontOfSize:12];
+        _localNotificationBar.backgroundColor = [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1];
+        _localNotificationBar.image = [UIImage imageNamed:@"sample_image"];
+        _localNotificationBar.bottomHairlineColor = [UIColor blueColor];
+    }
+    return _localNotificationBar;
 }
 
 
-- (IBAction)didTouchShowNotificationBar:(id)sender {
+- (IBAction)didTouchShowProgressNotificationBar:(id)sender {
     CGRect frame = self.tableView.bounds;
     frame.size.height = 60;
-    self.notificationBar.frame = frame;
+    self.progressNotificationBar.frame = frame;
     
-    [self.tableView addSubview:self.notificationBar];
+    [self.tableView addSubview:self.progressNotificationBar];
     [UIView animateWithDuration:0.5 animations:^{
         [self adjustNotificationBarFrame];
-        self.notificationBar.alpha = 1;
+        self.progressNotificationBar.alpha = 1;
+    }];
+}
+
+
+- (IBAction)didTouchShowLocalNotificationBar:(id)sender {
+    CGRect frame = self.tableView.bounds;
+    frame.size.height = 60;
+    self.localNotificationBar.frame = frame;
+    
+    [self.tableView addSubview:self.localNotificationBar];
+    [UIView animateWithDuration:0.5 animations:^{
+        [self adjustNotificationBarFrame];
+        self.localNotificationBar.alpha = 1;
     }];
 }
 
 
 - (IBAction)didTouchHideNotificationBar:(id)sender {
-    if ([self.tableView.subviews containsObject:self.notificationBar]) {
-        CGRect frame = self.notificationBar.frame;
-        frame.origin.y = self.tableView.contentOffset.y + self.originalTableViewOffset;
-        [UIView animateWithDuration:0.5 animations:^{
-            self.notificationBar.frame = frame;
-            self.notificationBar.alpha = 0;
-        } completion:^(BOOL finished) {
-            [self.notificationBar removeFromSuperview];
-        }];
+    UIView* notificationBar;
+    
+    if ([self.tableView.subviews containsObject:self.progressNotificationBar]) {
+        notificationBar = self.progressNotificationBar;
+        
+    } else if ([self.tableView.subviews containsObject:self.localNotificationBar]) {
+        notificationBar = self.localNotificationBar;
     }
+    
+    
+    CGRect frame = notificationBar.frame;
+    frame.origin.y = self.tableView.contentOffset.y + self.originalTableViewOffset;
+    [UIView animateWithDuration:0.5 animations:^{
+        notificationBar.frame = frame;
+        notificationBar.alpha = 0;
+    } completion:^(BOOL finished) {
+        [notificationBar removeFromSuperview];
+    }];
 }
 
 
 - (IBAction)didTouchMoreProgress:(id)sender {
-    self.notificationBar.progress += 0.05f;
+    self.progressNotificationBar.progress += 0.05f;
 }
 
+
 - (IBAction)didTouchLessProgress:(id)sender {
-    self.notificationBar.progress -= 0.05f;
+    self.progressNotificationBar.progress -= 0.05f;
 }
+
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView {
     [self adjustNotificationBarFrame];
-    [self.view bringSubviewToFront:self.notificationBar];
+    [self.view bringSubviewToFront:self.progressNotificationBar];
+    [self.view bringSubviewToFront:self.localNotificationBar];
 }
 
 
@@ -92,18 +136,22 @@
     CGRect frame = self.tableView.bounds;
     frame.size.height = 60;
     frame.origin.y -= self.originalTableViewOffset;
-    self.notificationBar.frame = frame;
+    self.progressNotificationBar.frame = frame;
+    self.localNotificationBar.frame = frame;
 }
+
 
 - (IBAction)showAccessory:(id)sender {
     UIButton* button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button setTitle:@"Cancel" forState:UIControlStateNormal];
     [button sizeToFit];
-    self.notificationBar.accessoryView = button;
+    self.progressNotificationBar.accessoryView = button;
+    self.localNotificationBar.accessoryView = button;
 }
 
 
 - (IBAction)hideAccessory:(id)sender {
-    self.notificationBar.accessoryView = nil;
+    self.progressNotificationBar.accessoryView = nil;
+    self.localNotificationBar.accessoryView = nil;
 }
 @end

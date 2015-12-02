@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		72B3852D1C00C98100211AEA /* OCNotificationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B3852C1C00C98100211AEA /* OCNotificationBar.m */; };
+		726DE4A51C0F7B320097FA69 /* OCLocalNotificationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 726DE4A41C0F7B320097FA69 /* OCLocalNotificationBar.m */; };
+		72B3852D1C00C98100211AEA /* OCProgressNotificationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B3852C1C00C98100211AEA /* OCProgressNotificationBar.m */; };
 		72B385331C00CA6F00211AEA /* sample_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B385321C00CA6F00211AEA /* sample_image.png */; };
 		72D2EDEE1BFF858C00CF8F5F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 72D2EDED1BFF858C00CF8F5F /* main.m */; };
 		72D2EDF11BFF858C00CF8F5F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 72D2EDF01BFF858C00CF8F5F /* AppDelegate.m */; };
@@ -37,8 +38,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		72B3852B1C00C98100211AEA /* OCNotificationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCNotificationBar.h; sourceTree = "<group>"; };
-		72B3852C1C00C98100211AEA /* OCNotificationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCNotificationBar.m; sourceTree = "<group>"; };
+		726DE4A31C0F7B320097FA69 /* OCLocalNotificationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCLocalNotificationBar.h; sourceTree = "<group>"; };
+		726DE4A41C0F7B320097FA69 /* OCLocalNotificationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCLocalNotificationBar.m; sourceTree = "<group>"; };
+		72B3852B1C00C98100211AEA /* OCProgressNotificationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCProgressNotificationBar.h; sourceTree = "<group>"; };
+		72B3852C1C00C98100211AEA /* OCProgressNotificationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCProgressNotificationBar.m; sourceTree = "<group>"; };
 		72B385321C00CA6F00211AEA /* sample_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sample_image.png; sourceTree = "<group>"; };
 		72D2EDE91BFF858C00CF8F5F /* OCNotificationBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OCNotificationBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72D2EDED1BFF858C00CF8F5F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -86,8 +89,10 @@
 		72B385271C00C87C00211AEA /* OCNotificationBar */ = {
 			isa = PBXGroup;
 			children = (
-				72B3852B1C00C98100211AEA /* OCNotificationBar.h */,
-				72B3852C1C00C98100211AEA /* OCNotificationBar.m */,
+				72B3852B1C00C98100211AEA /* OCProgressNotificationBar.h */,
+				72B3852C1C00C98100211AEA /* OCProgressNotificationBar.m */,
+				726DE4A31C0F7B320097FA69 /* OCLocalNotificationBar.h */,
+				726DE4A41C0F7B320097FA69 /* OCLocalNotificationBar.m */,
 			);
 			path = OCNotificationBar;
 			sourceTree = "<group>";
@@ -287,8 +292,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72B3852D1C00C98100211AEA /* OCNotificationBar.m in Sources */,
+				72B3852D1C00C98100211AEA /* OCProgressNotificationBar.m in Sources */,
 				72D2EDF41BFF858C00CF8F5F /* ViewController.m in Sources */,
+				726DE4A51C0F7B320097FA69 /* OCLocalNotificationBar.m in Sources */,
 				72D2EDF11BFF858C00CF8F5F /* AppDelegate.m in Sources */,
 				72D2EDEE1BFF858C00CF8F5F /* main.m in Sources */,
 			);

@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--TableViewController-->
@@ -290,11 +291,18 @@
                                 <action selector="didTouchHideNotificationBar:" destination="ueh-iI-zn8" id="jAR-7b-BCa"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Show" id="ikS-Hv-fRb">
-                            <connections>
-                                <action selector="didTouchShowNotificationBar:" destination="ueh-iI-zn8" id="xN4-Gl-ziZ"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Progress" id="ikS-Hv-fRb">
+                                <connections>
+                                    <action selector="didTouchShowProgressNotificationBar:" destination="ueh-iI-zn8" id="TXa-6z-kWY"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Local" id="EpS-hg-lZ0">
+                                <connections>
+                                    <action selector="didTouchShowLocalNotificationBar:" destination="ueh-iI-zn8" id="aVY-tt-A3X"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface OCNotificationBar : UIView
+@interface OCProgressNotificationBar : UIView
 
 #pragma mark - Text
 @property (nonatomic, strong, nullable) NSString* text;
