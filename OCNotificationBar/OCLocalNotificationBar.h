@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface OCLocalNotificationBar : UIView
+@protocol OCLocalNotificationBarDelegate;
+
+@interface OCLocalNotificationBar : UIVisualEffectView
 
 #pragma mark - Text Labels
 @property (nonatomic, weak, readonly) UILabel* textLabel;
@@ -25,7 +27,18 @@
 
 
 #pragma mark - Other
+
 // Default is lightGrayColor
 @property (nonatomic, strong, nullable) UIColor* bottomHairlineColor;
+
+#pragma mark - Delegate
+@property (nonatomic, assign, nullable) id <OCLocalNotificationBarDelegate>  delegate;
+
+@end
+
+
+@protocol OCLocalNotificationBarDelegate <NSObject>
+
+- (void) notificationBarDidReceiveTap:(nonnull OCLocalNotificationBar*) bar;
 
 @end

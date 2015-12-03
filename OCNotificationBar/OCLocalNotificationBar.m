@@ -9,7 +9,7 @@
 #import "OCLocalNotificationBar.h"
 
 @interface OCLocalNotificationBar()
-@property (nonatomic, weak) UIView* contentView;
+//@property (nonatomic, weak) UIView* contentView;
 @property (nonatomic, weak) UILabel* textLabel;
 @property (nonatomic, weak) UILabel* detailTextLabel;
 @property (nonatomic, weak) UIImageView* imageView;
@@ -17,7 +17,6 @@
 @property (nonatomic, strong) NSLayoutConstraint* accessoryViewWidthConstraint;
 
 @property (nonatomic, weak) CALayer* bottomHairlineLayer;
-@property (nonatomic, strong) CAShapeLayer* maskLayer;
 @end
 
 @implementation OCLocalNotificationBar
@@ -28,45 +27,58 @@
 }
 
 - (instancetype) initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self createSubViews];
-        [self configAutoLayoutConstraints];
-        [self applyDefaults];
+    UIBlurEffect* effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    self = [super initWithEffect:effect];
+    if (self)  {
+        self.frame = frame;
+        [self config];
     }
     return self;
 }
 
+- (instancetype) initWithEffect:(UIVisualEffect *)effect {
+    self = [super initWithEffect:effect];
+    if (self) {
+        [self config];
+    }
+    return self;
+}
 
 #pragma mark - Config
 
+- (void) config {
+    [self createSubViews];
+    [self configAutoLayoutConstraints];
+    [self applyDefaults];
+    [self configGestureRecognizers];
+}
 
 - (void) createSubViews {
     
-    UIView* contentView = [[UIView alloc]initWithFrame:self.bounds];
+    //    UIView* contentView = [[UIView alloc]initWithFrame:self.bounds];
     
     UIImageView* imageView = [[UIImageView alloc]initWithFrame:CGRectZero];
     UILabel* textLabel = [[UILabel alloc]initWithFrame:CGRectZero];
     UILabel* detailTextLabel = [[UILabel alloc]initWithFrame:CGRectZero];
     UIView* accessoryContainerView = [[UIView alloc]initWithFrame:CGRectZero];
     
-    contentView.translatesAutoresizingMaskIntoConstraints = NO;
+    //    contentView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     textLabel.translatesAutoresizingMaskIntoConstraints = NO;
     detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
     accessoryContainerView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    [contentView addSubview:imageView];
-    [contentView addSubview:textLabel];
-    [contentView addSubview:detailTextLabel];
-    [contentView addSubview:accessoryContainerView];
-    [self addSubview:contentView];
+    [self.contentView addSubview:imageView];
+    [self.contentView addSubview:textLabel];
+    [self.contentView addSubview:detailTextLabel];
+    [self.contentView addSubview:accessoryContainerView];
+    [self addSubview:self.contentView];
     
     self.imageView = imageView;
     self.textLabel = textLabel;
     self.detailTextLabel = detailTextLabel;
     self.accessoryContainerView = accessoryContainerView;
-    self.contentView = contentView;
+    //    self.contentView = contentView;
     
 }
 
@@ -93,43 +105,26 @@
     [self.contentView addConstraint:self.accessoryViewWidthConstraint];
     
     [self.imageView addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.imageView attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.imageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
     
-     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.textLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.textLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
     
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.detailTextLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1 constant:0]];
-    
 }
 
 
 - (void) applyDefaults {
-    self.imageView.backgroundColor = [UIColor grayColor];
-    self.imageView.layer.cornerRadius = 3.0f;
-    self.imageView.clipsToBounds = YES;
+    self.imageView.contentMode = UIViewContentModeScaleToFill;
+    //    self.contentView.backgroundColor = [UIColor clearColor];
 }
 
 
 #pragma mark - Getter and Setters
 
-//- (void) setText:(NSString *)text {
-//    _text = text;
-//    self.textLabel.text = text;
-//    [self.textLabel sizeToFit];
-//    [self setNeedsUpdateConstraints];
-//}
-//
-//- (void) setDetailText:(NSString *)detailText {
-//    _detailText = detailText;
-//    self.detailTextLabel.text = detailText;
-//    [self.detailTextLabel sizeToFit];
-//    [self setNeedsUpdateConstraints];
-//}
-
 
 - (void) setImage:(UIImage *)image {
     _image = image;
     self.imageView.image = image;
-    self.imageView.contentMode = UIViewContentModeScaleToFill;
+    [self setNeedsLayout];
 }
 
 
@@ -177,17 +172,25 @@
     }
     self.bottomHairlineLayer.frame = CGRectMake(0, self.bounds.size.height - 1, self.bounds.size.width, 0.5);
     
-    
-    if (!self.maskLayer) {
-        self.maskLayer = [CAShapeLayer new];
-    }
-    
+    CAShapeLayer* maskLayer = [CAShapeLayer new];
     UIBezierPath* maskPath = [UIBezierPath bezierPathWithOvalInRect:self.imageView.bounds];
-    self.maskLayer.frame = self.imageView.bounds;
-    self.maskLayer.path = maskPath.CGPath;
-    self.imageView.layer.mask = self.maskLayer;
-    
-    self.bottomHairlineLayer.frame = CGRectMake(0, self.bounds.size.height - 1, self.bounds.size.width, 0.5);
+    maskLayer.frame = self.imageView.bounds;
+    maskLayer.path = maskPath.CGPath;
+    self.imageView.layer.mask = maskLayer;
+}
+
+
+#pragma mark - Gesture Recognizers
+
+- (void) configGestureRecognizers {
+    UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didReceiveTap:)];
+    [self.contentView addGestureRecognizer:tap];
+}
+
+- (void) didReceiveTap:(id) sender {
+    if (self.delegate) {
+        [self.delegate notificationBarDidReceiveTap:self];
+    }
 }
 
 
